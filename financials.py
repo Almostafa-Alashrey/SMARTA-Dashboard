@@ -2,6 +2,13 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
+st.markdown("""
+    <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
+    </style>
+""", unsafe_allow_html=True)
 
 # Page setup
 st.set_page_config(page_title="SMARTA Financials", layout="wide")
@@ -66,9 +73,16 @@ col_pie, col_table = st.columns(2)
 with col_pie:
     st.subheader("Year 1 Investment Breakdown")
     pie_data = pd.DataFrame({
-        "Expense": ["Initial Setup & Hardware (76%)", "Server/SaaS (21%)", "Maintenance (3%)"],
-        "Amount (EGP)": [35000, 9600, 1200]
+        "Expense": ["Initial Setup & Hardware", "Server/SaaS", "Maintenance"],
+        "Amount (EGP)": [35000, 12500, 1200]
     })
+    
+    # Plotly will calculate the % automatically if you add 'textinfo'
+    fig = px.pie(pie_data, values="Amount (EGP)", names="Expense", 
+                 color_discrete_sequence=["#ff4b4b", "#FF9800", "#FFC107"],
+                 hole=0.4)
+    fig.update_traces(textposition='inside', textinfo='percent+label')
+    st.plotly_chart(fig, use_container_width=True)
     
     # Native Plotly chart (automatically adapts to light/dark theme)
     fig = px.pie(pie_data, values="Amount (EGP)", names="Expense", 
