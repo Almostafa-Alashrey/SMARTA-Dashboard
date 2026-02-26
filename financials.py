@@ -6,7 +6,7 @@ import plotly.express as px
 # Page setup
 st.set_page_config(page_title="SMARTA Financials", layout="wide")
 
-# Hide Streamlit UI elements for a professional look
+# Hide Streamlit UI elements
 st.markdown("""
     <style>
         #MainMenu {visibility: hidden;}
@@ -20,19 +20,19 @@ st.markdown("""
 # =============================
 st.markdown("<h1 style='color: #2196F3 !important;'>🧊 SMARTA Enterprise Analytics</h1>", unsafe_allow_html=True)
 st.header("📈 Financial Projections (Per 100m² Unit)")
-st.markdown("**Edge AI Model: Raspberry Pi local inference with private cloud sync.**")
+st.markdown("**Edge AI Model: Raspberry Pi local inference with a 30% SaaS profit margin target.**")
 
 # Metrics Calculation
 # Setup Profit: 45,000 - 35,000 = 10,000
-# SaaS Profit (30%): 16,250 - 12,500 = 3,750
+# SaaS Profit (30% of 17,850): 17,850 - 12,500 = 5,350
 # Maintenance Profit: 6,000 - 1,200 = 4,800
-# Total Year 1 Net Profit = 18,550
-# Total Year 1 Revenue = 45,000 + 16,250 + 6,000 = 67,250
+# Total Year 1 Net Profit = 20,150
+# Total Year 1 Revenue = 45,000 + 17,850 + 6,000 = 68,850
 
 col_f1, col_f2, col_f3 = st.columns(3)
-col_f1.metric(label="Year 1 Total Revenue", value="67,250 EGP")
-col_f2.metric(label="Year 1 Net Profit", value="18,550 EGP")
-col_f3.metric(label="Year 1 ROI", value="38.1%", delta="Client-Friendly Pricing")
+col_f1.metric(label="Year 1 Total Revenue", value="68,850 EGP")
+col_f2.metric(label="Year 1 Net Profit", value="20,150 EGP")
+col_f3.metric(label="Year 1 ROI", value="41.4%", delta="Target 30% SaaS Margin")
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -40,7 +40,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 fin_data = {
     "Category": ["Initial Setup & Hardware", "Annual SaaS", "Annual Maintenance"],
     "Our Cost (EGP)": [35000, 12500, 1200],
-    "Client Price (EGP)": [45000, 16250, 6000]
+    "Client Price (EGP)": [45000, 17850, 6000] # Price adjusted for true 30% margin
 }
 df_fin = pd.DataFrame(fin_data)
 
@@ -57,7 +57,7 @@ with col_chart1:
 with col_chart2:
     st.subheader("12-Month Cumulative Cash Flow")
     months = np.arange(0, 13)
-    monthly_rev = (16250 / 12) + 500
+    monthly_rev = (17850 / 12) + 500
     monthly_cost = 1040 + 100 
     
     cum_revenue = [45000 + (m * monthly_rev) for m in months]
@@ -80,7 +80,6 @@ col_pie, col_table = st.columns(2)
 
 with col_pie:
     st.subheader("Year 1 Cost Distribution")
-    # Professional blue shades: Dark blue, Medium blue, Sky blue
     pie_data = pd.DataFrame({
         "Expense": ["Hardware Setup (72%)", "SaaS Infrastructure (26%)", "Maintenance (2%)"],
         "Amount (EGP)": [35000, 12500, 1200]
@@ -89,8 +88,6 @@ with col_pie:
     fig = px.pie(pie_data, values="Amount (EGP)", names="Expense", 
                  color_discrete_sequence=["#0D47A1", "#1976D2", "#42A5F5"],
                  hole=0.4)
-    
-    # Hide plotly toolbar for cleaner look
     st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
 
 with col_table:
