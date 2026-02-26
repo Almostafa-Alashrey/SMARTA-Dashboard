@@ -24,7 +24,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 # Data Definition
 fin_data = {
     "Category": ["Initial Setup & Hardware", "Annual SaaS", "Annual Maintenance"],
-    "Our Cost (EGP)": [35000, 9600, 1200],
+    "Our Cost (EGP)": [35000, 12500, 1200], # Changed 9600 to 12500
     "Client Price (EGP)": [60000, 30000, 6000]
 }
 df_fin = pd.DataFrame(fin_data)
@@ -43,7 +43,7 @@ with col_chart2:
     st.subheader("12-Month Cumulative Cash Flow")
     months = np.arange(0, 13)
     monthly_rev = 2500 + 500  # SaaS + Maintenance
-    monthly_cost = 800 + 100  # Server + Maintenance Cost
+    monthly_cost = 1040 + 100  # Server/SIM Cost + Maintenance Cost
     
     cum_revenue = [60000 + (m * monthly_rev) for m in months]
     cum_costs = [35000 + (m * monthly_cost) for m in months]
