@@ -2,6 +2,11 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
+
+# Page setup
+st.set_page_config(page_title="SMARTA Financials", layout="wide")
+
+# Hide Streamlit UI elements for a professional look
 st.markdown("""
     <style>
         #MainMenu {visibility: hidden;}
@@ -10,9 +15,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Page setup
-st.set_page_config(page_title="SMARTA Financials", layout="wide")
-
 # =============================
 # 1. BRANDING & METRICS
 # =============================
@@ -20,19 +22,25 @@ st.markdown("<h1 style='color: #2196F3 !important;'>🧊 SMARTA Enterprise Analy
 st.header("📈 Financial Projections (Per 100m² Unit)")
 st.markdown("**Unit Economics for a standard 100-square-meter cold storage facility (One Client / First 12 Months).**")
 
-# Top-level metrics
+# Top-level metrics calculation
+# Initial Setup Profit: 60,000 - 45,000 = 15,000
+# SaaS Profit: 25,000 - 12,500 = 12,500
+# Maintenance Profit: 6,000 - 1,200 = 4,800
+# Total Year 1 Net Profit = 32,300
+# Total Year 1 Revenue = 60,000 + 25,000 + 6,000 = 91,000
+
 col_f1, col_f2, col_f3 = st.columns(3)
-col_f1.metric(label="Year 1 Total Revenue", value="96,000 EGP")
-col_f2.metric(label="Year 1 Net Profit", value="50,200 EGP")
-col_f3.metric(label="Year 1 ROI", value="109.6%", delta="High Margin Target")
+col_f1.metric(label="Year 1 Total Revenue", value="91,000 EGP")
+col_f2.metric(label="Year 1 Net Profit", value="32,300 EGP")
+col_f3.metric(label="Year 1 ROI", value="55.0%", delta="Sustainable Growth")
 
 st.markdown("<br>", unsafe_allow_html=True)
 
 # Data Definition
 fin_data = {
     "Category": ["Initial Setup & Hardware", "Annual SaaS", "Annual Maintenance"],
-    "Our Cost (EGP)": [35000, 12500, 1200], # Changed 9600 to 12500
-    "Client Price (EGP)": [60000, 30000, 6000]
+    "Our Cost (EGP)": [45000, 12500, 1200],
+    "Client Price (EGP)": [60000, 25000, 6000]
 }
 df_fin = pd.DataFrame(fin_data)
 
@@ -49,11 +57,11 @@ with col_chart1:
 with col_chart2:
     st.subheader("12-Month Cumulative Cash Flow")
     months = np.arange(0, 13)
-    monthly_rev = 2500 + 500  # SaaS + Maintenance
-    monthly_cost = 1040 + 100  # Server/SIM Cost + Maintenance Cost
+    monthly_rev = (25000 / 12) + 500  # Updated SaaS + Maintenance
+    monthly_cost = 1040 + 100        # Server/SIM + Maintenance Cost
     
     cum_revenue = [60000 + (m * monthly_rev) for m in months]
-    cum_costs = [35000 + (m * monthly_cost) for m in months]
+    cum_costs = [45000 + (m * monthly_cost) for m in months]
     
     df_cashflow = pd.DataFrame({
         "Month": months,
@@ -72,26 +80,22 @@ col_pie, col_table = st.columns(2)
 
 with col_pie:
     st.subheader("Year 1 Investment Breakdown")
+    # New Percentages: 45000/58700 = 76.6%, 12500/58700 = 21.3%, 1200/58700 = 2.1%
     pie_data = pd.DataFrame({
-        "Expense": ["Initial Setup & Hardware", "Server/SaaS", "Maintenance"],
-        "Amount (EGP)": [35000, 12500, 1200]
+        "Expense": ["Initial Setup (77%)", "Server/SaaS (21%)", "Maintenance (2%)"],
+        "Amount (EGP)": [45000, 12500, 1200]
     })
     
-    # Plotly will calculate the % automatically if you add 'textinfo'
     fig = px.pie(pie_data, values="Amount (EGP)", names="Expense", 
                  color_discrete_sequence=["#ff4b4b", "#FF9800", "#FFC107"],
                  hole=0.4)
-    fig.update_traces(textposition='inside', textinfo='percent+label')
     st.plotly_chart(fig, use_container_width=True)
-    
 
 with col_table:
     st.subheader("Detailed ROI Table")
-    # Calculate Profit and Margin for each row
     df_fin["Net Profit (EGP)"] = df_fin["Client Price (EGP)"] - df_fin["Our Cost (EGP)"]
     df_fin["Profit Margin (%)"] = round((df_fin["Net Profit (EGP)"] / df_fin["Client Price (EGP)"]) * 100, 1)
     
-    # Calculate the Total Row
     total_cost = df_fin["Our Cost (EGP)"].sum()
     total_price = df_fin["Client Price (EGP)"].sum()
     total_profit = df_fin["Net Profit (EGP)"].sum()
@@ -105,11 +109,6 @@ with col_table:
         "Profit Margin (%)": total_margin
     }])
     
-    # Combine the main data with the total row
     df_fin_with_total = pd.concat([df_fin, total_row], ignore_index=True)
-    
-    # Shift the index to start at 1 instead of 0
     df_fin_with_total.index += 1
-    
-    # Display the final table
     st.dataframe(df_fin_with_total, use_container_width=True)
