@@ -84,11 +84,6 @@ with col_pie:
     fig.update_traces(textposition='inside', textinfo='percent+label')
     st.plotly_chart(fig, use_container_width=True)
     
-    # Native Plotly chart (automatically adapts to light/dark theme)
-    fig = px.pie(pie_data, values="Amount (EGP)", names="Expense", 
-                 color_discrete_sequence=["#ff4b4b", "#FF9800", "#FFC107"],
-                 hole=0.4)
-    st.plotly_chart(fig, use_container_width=True)
 
 with col_table:
     st.subheader("Detailed ROI Table")
