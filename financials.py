@@ -6,7 +6,7 @@ import plotly.express as px
 # Page setup
 st.set_page_config(page_title="SMARTA Financials", layout="wide")
 
-# Hide Streamlit UI elements
+# Hide Streamlit UI elements for a professional look
 st.markdown("""
     <style>
         #MainMenu {visibility: hidden;}
@@ -20,7 +20,7 @@ st.markdown("""
 # =============================
 st.markdown("<h1 style='color: #2196F3 !important;'>🧊 SMARTA Enterprise Analytics</h1>", unsafe_allow_html=True)
 st.header("📈 Financial Projections (Per 100m² Unit)")
-st.markdown("**Optimized Efficiency Model: Lower barrier to entry for small-to-medium cold storage.**")
+st.markdown("**Edge AI Model: Raspberry Pi local inference with private cloud sync.**")
 
 # Metrics Calculation
 # Setup Profit: 45,000 - 35,000 = 10,000
@@ -52,7 +52,7 @@ col_chart1, col_chart2 = st.columns(2)
 with col_chart1:
     st.subheader("Cost vs. Revenue Breakdown")
     bar_data = df_fin.set_index("Category")
-    st.bar_chart(bar_data, color=["#ff4b4b", "#2196F3"]) 
+    st.bar_chart(bar_data, color=["#1E88E5", "#64B5F6"]) 
 
 with col_chart2:
     st.subheader("12-Month Cumulative Cash Flow")
@@ -69,7 +69,7 @@ with col_chart2:
         "Cumulative Cost (EGP)": cum_costs
     }).set_index("Month")
     
-    st.line_chart(df_cashflow, color=["#2196F3", "#ff4b4b"])
+    st.line_chart(df_cashflow, color=["#1565C0", "#E53935"])
 
 st.markdown("---")
 
@@ -80,16 +80,18 @@ col_pie, col_table = st.columns(2)
 
 with col_pie:
     st.subheader("Year 1 Cost Distribution")
-    # New Percentages based on 48,700 total cost
+    # Professional blue shades: Dark blue, Medium blue, Sky blue
     pie_data = pd.DataFrame({
         "Expense": ["Hardware Setup (72%)", "SaaS Infrastructure (26%)", "Maintenance (2%)"],
         "Amount (EGP)": [35000, 12500, 1200]
     })
     
     fig = px.pie(pie_data, values="Amount (EGP)", names="Expense", 
-                 color_discrete_sequence=["#ff4b4b", "#FF9800", "#FFC107"],
+                 color_discrete_sequence=["#0D47A1", "#1976D2", "#42A5F5"],
                  hole=0.4)
-    st.plotly_chart(fig, use_container_width=True)
+    
+    # Hide plotly toolbar for cleaner look
+    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
 
 with col_table:
     st.subheader("ROI Detail Table")
